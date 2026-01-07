@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import BookingTicket from './BookingTicket';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
@@ -211,6 +212,8 @@ const SlotSelection = () => {
     const [bookingDate, setBookingDate] = useState(new Date().toISOString().split('T')[0]);
     const [startTime, setStartTime] = useState('09:00');
     const [paymentMethod, setPaymentMethod] = useState('card');
+    const [showTicket, setShowTicket] = useState(false);
+    const [ticketData, setTicketData] = useState(null);
 
     const durations = [1, 2, 4, 8, 12, 24];
     const pricePerHour = parkingLocation?.pricePerHour?.[vehicleType] || (vehicleType === 'car' ? 40 : 20);
@@ -313,7 +316,44 @@ const SlotSelection = () => {
 
             const data = await response.json();
             if (response.ok) {
-                alert(`Reservation confirmed! Total: ${data.price} for ${data.details}`);
+                // Build ticket data for confirmation view
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                const booking = data.booking;
+
+                if (booking) {
+                    const start = new Date(booking.startTime);
+                    const end = new Date(booking.endTime);
+
+                    const formatDate = (d) => d.toLocaleDateString('en-IN', {
+                        weekday: 'short',
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+
+                    const formatTime = (d) => `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+
+                    setTicketData({
+                        bookingId: booking._id,
+                        userName: user.name || 'Guest User',
+                        userEmail: user.email || '',
+                        vehicleType: booking.vehicleType,
+                        vehicleNumber: booking.vehicleNumber,
+                        parkingSlot: booking.parkingSlot,
+                        locationName: parkingLocation?.name || 'Parking Location',
+                        locationAddress: parkingLocation?.address || '',
+                        dateLabel: formatDate(start),
+                        startTimeLabel: formatTime(start),
+                        endTimeLabel: formatTime(end),
+                        durationHours: booking.duration,
+                        price: booking.price,
+                        createdAtLabel: booking.createdAt
+                            ? new Date(booking.createdAt).toLocaleString('en-IN')
+                            : undefined,
+                    });
+                    setShowTicket(true);
+                }
+
                 fetchOccupiedSlots();
                 setSelectedSlot(null);
                 setVehicleNumber('');
@@ -465,6 +505,14 @@ const SlotSelection = () => {
                     isFormValid={isFormValid}
                     isBooking={isBooking}
                     handleBooking={handleBooking}
+                />
+            )}
+
+            {/* Booking Ticket Overlay */}
+            {showTicket && (
+                <BookingTicket 
+                    ticketData={ticketData}
+                    onClose={() => setShowTicket(false)}
                 />
             )}
         </div>
