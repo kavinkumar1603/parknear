@@ -3,6 +3,198 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
+// Separate component to avoid remounting on every parent re-render
+const ReservationPanel = ({
+    className,
+    showLevel,
+    selectedSlot,
+    vehicleType,
+    bookingDate,
+    setBookingDate,
+    startTime,
+    setStartTime,
+    vehicleNumber,
+    setVehicleNumber,
+    duration,
+    setDuration,
+    durations,
+    paymentMethod,
+    setPaymentMethod,
+    calculateEndTime,
+    totalPrice,
+    isFormValid,
+    isBooking,
+    handleBooking,
+}) => (
+    <div className={className}>
+        <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl sm:rounded-[2.5rem] p-4 sm:p-6 md:p-8 flex flex-col w-full max-w-md lg:max-w-none lg:h-[calc(100vh-4rem)] shadow-2xl overflow-y-auto scrollbar-hide">
+            <div className="mb-6 sm:mb-8">
+                <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-1">Reservation</h2>
+                <p className="text-gray-500 font-bold uppercase text-[8px] sm:text-[9px] tracking-[0.2em]">Secure Checkout</p>
+            </div>
+
+            <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8">
+                {/* Slot Info Card */}
+                <div className="bg-white/5 rounded-2xl p-4 border border-white/5 flex justify-between items-center">
+                    <div>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Zone {selectedSlot || '---'}</p>
+                        <p className="text-sm font-bold text-white uppercase">{vehicleType} Slot</p>
+                    </div>
+                    {showLevel && (
+                        <div className="text-right">
+                            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Level</p>
+                            <p className="text-sm font-bold text-blue-500">{selectedSlot ? selectedSlot.charAt(1) : '--'}</p>
+                        </div>
+                    )}
+                </div>
+
+                {/* Date Selection */}
+                <div className="space-y-2">
+                    <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Booking Date</label>
+                    <input 
+                        type="date" 
+                        value={bookingDate}
+                        min={new Date().toISOString().split('T')[0]}
+                        onChange={(e) => setBookingDate(e.target.value)}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors text-sm sm:text-base"
+                    />
+                </div>
+
+                {/* Time Selection */}
+                <div className="space-y-2">
+                    <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Start Time</label>
+                    <input 
+                        type="time" 
+                        value={startTime}
+                        onChange={(e) => setStartTime(e.target.value)}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors text-sm sm:text-base"
+                    />
+                </div>
+
+                {/* Time Range Display */}
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-2">Booking Time</p>
+                    <p className="text-white font-bold">{startTime} - {calculateEndTime()}</p>
+                    <p className="text-gray-400 text-sm mt-1">{new Date(bookingDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                </div>
+
+                {/* Vehicle Number Input */}
+                <div className="space-y-2">
+                    <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Vehicle Plate Number</label>
+                    <input 
+                        type="text" 
+                        placeholder="e.g. ABC-1234"
+                        value={vehicleNumber}
+                        onChange={(e) => setVehicleNumber(e.target.value.toUpperCase())}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors placeholder:text-gray-700 uppercase text-sm sm:text-base"
+                    />
+                </div>
+
+                {/* Duration Selector */}
+                <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                        <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Duration (Hours)</label>
+                        <span className="text-blue-500 font-black text-sm">{duration}h</span>
+                    </div>
+                    <div className="grid grid-cols-3 sm:flex gap-2">
+                        {durations.map((h) => (
+                            <button
+                                key={h}
+                                onClick={() => setDuration(h)}
+                                className={`py-2 px-2 sm:flex-1 rounded-lg text-[10px] font-black transition-all touch-manipulation ${
+                                    duration === h 
+                                        ? 'bg-blue-600 text-white' 
+                                        : 'bg-white/5 text-gray-500 hover:bg-white/10 hover:text-gray-300 active:bg-white/20'
+                                }`}
+                            >
+                                {h}h
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Payment Method */}
+                <div className="space-y-3">
+                    <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Payment Method</label>
+                    <div className="grid grid-cols-3 gap-2">
+                        <button
+                            onClick={() => setPaymentMethod('cash')}
+                            className={`p-2 sm:p-3 rounded-xl border flex flex-col items-center gap-1 sm:gap-2 transition-all touch-manipulation ${
+                                paymentMethod === 'cash' 
+                                    ? 'border-blue-500 bg-blue-500/10 text-blue-500' 
+                                    : 'border-white/5 bg-white/5 text-gray-600 hover:border-white/10 active:bg-white/10'
+                            }`}
+                        >
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M11 17h2v-1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1h-3v-1h4V8h-2V7h-2v1h-1c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h3v1H9v2h2v1zm9-13H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V6h16v12z"/>
+                            </svg>
+                            <span className="text-[8px] font-bold uppercase">Cash</span>
+                        </button>
+                        <button
+                            onClick={() => setPaymentMethod('card')}
+                            className={`p-2 sm:p-3 rounded-xl border flex flex-col items-center gap-1 sm:gap-2 transition-all touch-manipulation ${
+                                paymentMethod === 'card' 
+                                    ? 'border-blue-500 bg-blue-500/10 text-blue-500' 
+                                    : 'border-white/5 bg-white/5 text-gray-600 hover:border-white/10 active:bg-white/10'
+                            }`}
+                        >
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                            </svg>
+                            <span className="text-[8px] font-bold uppercase">Card</span>
+                        </button>
+                        <button
+                            onClick={() => setPaymentMethod('upi')}
+                            className={`p-2 sm:p-3 rounded-xl border flex flex-col items-center gap-1 sm:gap-2 transition-all touch-manipulation ${
+                                paymentMethod === 'upi' 
+                                    ? 'border-blue-500 bg-blue-500/10 text-blue-500' 
+                                    : 'border-white/5 bg-white/5 text-gray-600 hover:border-white/10 active:bg-white/10'
+                            }`}
+                        >
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <span className="text-[8px] font-bold uppercase">UPI</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Pricing and Action */}
+            <div className="pt-4 sm:pt-6 border-t border-white/10 mt-auto">
+                <div className="flex justify-between items-end mb-4 sm:mb-6">
+                    <div>
+                        <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Total Fee</p>
+                        <p className="text-3xl sm:text-4xl font-black text-white tracking-tighter">₹{totalPrice.toFixed(2)}</p>
+                    </div>
+                    <p className="text-gray-600 text-[9px] font-bold italic">Incl. Service Tax</p>
+                </div>
+
+                <button
+                    onClick={handleBooking}
+                    disabled={!isFormValid || isBooking}
+                    className={`
+                        w-full py-3 sm:py-4 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 transform touch-manipulation
+                        ${!isFormValid || isBooking 
+                            ? 'bg-white/5 text-gray-600 cursor-not-allowed' 
+                            : 'bg-[#3b82f6] text-white hover:bg-blue-400 active:scale-95 active:bg-blue-600'}
+                    `}
+                >
+                    {isBooking ? (
+                        <span className="flex items-center justify-center gap-3">
+                            <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Processing
+                        </span>
+                    ) : 'Complete Reservation'}
+                </button>
+            </div>
+        </div>
+    </div>
+);
+
 const SlotSelection = () => {
     const { locationId } = useParams();
     const location = useLocation();
@@ -143,179 +335,6 @@ const SlotSelection = () => {
         );
     }
 
-    const ReservationPanel = ({
-        className,
-        showLevel,
-    }) => (
-        <div className={className}>
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl sm:rounded-[2.5rem] p-4 sm:p-6 md:p-8 flex flex-col w-full max-w-md lg:max-w-none lg:h-[calc(100vh-4rem)] shadow-2xl overflow-y-auto scrollbar-hide">
-                <div className="mb-6 sm:mb-8">
-                    <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-1">Reservation</h2>
-                    <p className="text-gray-500 font-bold uppercase text-[8px] sm:text-[9px] tracking-[0.2em]">Secure Checkout</p>
-                </div>
-
-                <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8">
-                    {/* Slot Info Card */}
-                    <div className="bg-white/5 rounded-2xl p-4 border border-white/5 flex justify-between items-center">
-                        <div>
-                            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Zone {selectedSlot || '---'}</p>
-                            <p className="text-sm font-bold text-white uppercase">{vehicleType} Slot</p>
-                        </div>
-                        {showLevel && (
-                            <div className="text-right">
-                                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Level</p>
-                                <p className="text-sm font-bold text-blue-500">{selectedSlot ? selectedSlot.charAt(1) : '--'}</p>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Date Selection */}
-                    <div className="space-y-2">
-                        <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Booking Date</label>
-                        <input 
-                            type="date" 
-                            value={bookingDate}
-                            min={new Date().toISOString().split('T')[0]}
-                            onChange={(e) => setBookingDate(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors text-sm sm:text-base"
-                        />
-                    </div>
-
-                    {/* Time Selection */}
-                    <div className="space-y-2">
-                        <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Start Time</label>
-                        <input 
-                            type="time" 
-                            value={startTime}
-                            onChange={(e) => setStartTime(e.target.value)}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors text-sm sm:text-base"
-                        />
-                    </div>
-
-                    {/* Time Range Display */}
-                    <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
-                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-2">Booking Time</p>
-                        <p className="text-white font-bold">{startTime} - {calculateEndTime()}</p>
-                        <p className="text-gray-400 text-sm mt-1">{new Date(bookingDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                    </div>
-
-                    {/* Vehicle Number Input */}
-                    <div className="space-y-2">
-                        <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Vehicle Plate Number</label>
-                        <input 
-                            type="text" 
-                            placeholder="e.g. ABC-1234"
-                            value={vehicleNumber}
-                            onChange={(e) => setVehicleNumber(e.target.value.toUpperCase())}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors placeholder:text-gray-700 uppercase text-sm sm:text-base"
-                        />
-                    </div>
-
-                    {/* Duration Selector */}
-                    <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                            <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Duration (Hours)</label>
-                            <span className="text-blue-500 font-black text-sm">{duration}h</span>
-                        </div>
-                        <div className="grid grid-cols-3 sm:flex gap-2">
-                            {durations.map((h) => (
-                                <button
-                                    key={h}
-                                    onClick={() => setDuration(h)}
-                                    className={`py-2 px-2 sm:flex-1 rounded-lg text-[10px] font-black transition-all touch-manipulation ${
-                                        duration === h 
-                                            ? 'bg-blue-600 text-white' 
-                                            : 'bg-white/5 text-gray-500 hover:bg-white/10 hover:text-gray-300 active:bg-white/20'
-                                    }`}
-                                >
-                                    {h}h
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Payment Method */}
-                    <div className="space-y-3">
-                        <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Payment Method</label>
-                        <div className="grid grid-cols-3 gap-2">
-                            <button
-                                onClick={() => setPaymentMethod('cash')}
-                                className={`p-2 sm:p-3 rounded-xl border flex flex-col items-center gap-1 sm:gap-2 transition-all touch-manipulation ${
-                                    paymentMethod === 'cash' 
-                                        ? 'border-blue-500 bg-blue-500/10 text-blue-500' 
-                                        : 'border-white/5 bg-white/5 text-gray-600 hover:border-white/10 active:bg-white/10'
-                                }`}
-                            >
-                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M11 17h2v-1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1h-3v-1h4V8h-2V7h-2v1h-1c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h3v1H9v2h2v1zm9-13H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V6h16v12z"/>
-                                </svg>
-                                <span className="text-[8px] font-bold uppercase">Cash</span>
-                            </button>
-                            <button
-                                onClick={() => setPaymentMethod('card')}
-                                className={`p-2 sm:p-3 rounded-xl border flex flex-col items-center gap-1 sm:gap-2 transition-all touch-manipulation ${
-                                    paymentMethod === 'card' 
-                                        ? 'border-blue-500 bg-blue-500/10 text-blue-500' 
-                                        : 'border-white/5 bg-white/5 text-gray-600 hover:border-white/10 active:bg-white/10'
-                                }`}
-                            >
-                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
-                                </svg>
-                                <span className="text-[8px] font-bold uppercase">Card</span>
-                            </button>
-                            <button
-                                onClick={() => setPaymentMethod('upi')}
-                                className={`p-2 sm:p-3 rounded-xl border flex flex-col items-center gap-1 sm:gap-2 transition-all touch-manipulation ${
-                                    paymentMethod === 'upi' 
-                                        ? 'border-blue-500 bg-blue-500/10 text-blue-500' 
-                                        : 'border-white/5 bg-white/5 text-gray-600 hover:border-white/10 active:bg-white/10'
-                                }`}
-                            >
-                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span className="text-[8px] font-bold uppercase">UPI</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Pricing and Action */}
-                <div className="pt-4 sm:pt-6 border-t border-white/10 mt-auto">
-                    <div className="flex justify-between items-end mb-4 sm:mb-6">
-                        <div>
-                            <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Total Fee</p>
-                            <p className="text-3xl sm:text-4xl font-black text-white tracking-tighter">₹{totalPrice.toFixed(2)}</p>
-                        </div>
-                        <p className="text-gray-600 text-[9px] font-bold italic">Incl. Service Tax</p>
-                    </div>
-
-                    <button
-                        onClick={handleBooking}
-                        disabled={!isFormValid || isBooking}
-                        className={`
-                            w-full py-3 sm:py-4 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 transform touch-manipulation
-                            ${!isFormValid || isBooking 
-                                ? 'bg-white/5 text-gray-600 cursor-not-allowed' 
-                                : 'bg-[#3b82f6] text-white hover:bg-blue-400 active:scale-95 active:bg-blue-600'}
-                        `}
-                    >
-                        {isBooking ? (
-                            <span className="flex items-center justify-center gap-3">
-                                <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Processing
-                            </span>
-                        ) : 'Complete Reservation'}
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-
     return (
         <div className="bg-black text-white flex flex-col lg:flex-row min-h-screen lg:h-screen">
             {/* Left Side - Parking Slots - Scrollable */}
@@ -403,6 +422,24 @@ const SlotSelection = () => {
             <ReservationPanel
                 className="hidden lg:flex w-full lg:w-110 bg-black items-center justify-center p-4 sm:p-6 md:p-8 lg:overflow-hidden"
                 showLevel
+                selectedSlot={selectedSlot}
+                vehicleType={vehicleType}
+                bookingDate={bookingDate}
+                setBookingDate={setBookingDate}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                vehicleNumber={vehicleNumber}
+                setVehicleNumber={setVehicleNumber}
+                duration={duration}
+                setDuration={setDuration}
+                durations={durations}
+                paymentMethod={paymentMethod}
+                setPaymentMethod={setPaymentMethod}
+                calculateEndTime={calculateEndTime}
+                totalPrice={totalPrice}
+                isFormValid={isFormValid}
+                isBooking={isBooking}
+                handleBooking={handleBooking}
             />
 
             {/* Mobile Reservation Panel - appears after slot selection */}
@@ -410,6 +447,24 @@ const SlotSelection = () => {
                 <ReservationPanel
                     className="lg:hidden w-full bg-black flex items-center justify-center p-4 sm:p-6 md:p-8"
                     showLevel={false}
+                    selectedSlot={selectedSlot}
+                    vehicleType={vehicleType}
+                    bookingDate={bookingDate}
+                    setBookingDate={setBookingDate}
+                    startTime={startTime}
+                    setStartTime={setStartTime}
+                    vehicleNumber={vehicleNumber}
+                    setVehicleNumber={setVehicleNumber}
+                    duration={duration}
+                    setDuration={setDuration}
+                    durations={durations}
+                    paymentMethod={paymentMethod}
+                    setPaymentMethod={setPaymentMethod}
+                    calculateEndTime={calculateEndTime}
+                    totalPrice={totalPrice}
+                    isFormValid={isFormValid}
+                    isBooking={isBooking}
+                    handleBooking={handleBooking}
                 />
             )}
         </div>
