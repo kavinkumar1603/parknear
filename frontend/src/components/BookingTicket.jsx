@@ -13,7 +13,15 @@ const BookingTicket = ({ ticketData, onClose }) => {
             style.textContent = `
                 @media print {
                     @page {
-                        margin: 0.5cm;
+                        size: A4 portrait;
+                        margin: 0;
+                    }
+                    
+                    html, body {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        height: 100vh !important;
+                        overflow: hidden !important;
                     }
                     
                     body * {
@@ -28,27 +36,40 @@ const BookingTicket = ({ ticketData, onClose }) => {
                     }
                     
                     #parking-ticket-wrapper {
-                        position: absolute !important;
+                        position: fixed !important;
                         left: 0 !important;
                         top: 0 !important;
-                        width: 100% !important;
-                        height: auto !important;
+                        width: 100vw !important;
+                        height: 100vh !important;
                         background: white !important;
-                        padding: 20px !important;
-                        display: block !important;
+                        padding: 2cm !important;
+                        display: flex !important;
+                        align-items: flex-start !important;
+                        justify-content: center !important;
+                        overflow: hidden !important;
+                        page-break-after: avoid !important;
+                        page-break-inside: avoid !important;
                     }
                     
                     #parking-ticket {
                         position: relative !important;
                         width: 100% !important;
-                        max-width: 100% !important;
-                        margin: 0 !important;
-                        padding: 30px !important;
+                        max-width: 800px !important;
+                        margin: 0 auto !important;
+                        padding: 35px !important;
                         background: white !important;
                         color: black !important;
                         border: 2px solid #ddd !important;
                         border-radius: 10px !important;
                         box-shadow: none !important;
+                        page-break-after: avoid !important;
+                        page-break-inside: avoid !important;
+                        break-inside: avoid !important;
+                    }
+                    
+                    #parking-ticket > * {
+                        page-break-inside: avoid !important;
+                        break-inside: avoid !important;
                     }
                     
                     #parking-ticket .bg-gradient-to-br,
@@ -77,6 +98,7 @@ const BookingTicket = ({ ticketData, onClose }) => {
                     
                     .print\\:hidden {
                         display: none !important;
+                        visibility: hidden !important;
                     }
                 }
             `;
