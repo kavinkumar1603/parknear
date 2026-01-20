@@ -13,7 +13,7 @@ const LandingPage = () => {
             style={{ backgroundImage: `url(${landing})` }}
             className="relative min-h-screen h-screen bg-cover bg-center"
         >
-            <div className="absolute inset-0 bg-black/80" />
+            <div className="absolute inset-0 bg-black/50" />
             <div className="relative z-10 flex h-full items-center justify-end px-4 sm:px-8 md:px-12">
                 <div className="text-right text-white max-w-full">
                     <h1 className="mb-4 text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-extrabold leading-tight">
