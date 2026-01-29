@@ -28,7 +28,7 @@ const ReservationPanel = ({
     handleBooking,
 }) => (
     <div className={className}>
-        <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl sm:rounded-[2.5rem] p-4 sm:p-6 md:p-8 flex flex-col w-full max-w-md lg:max-w-none lg:h-[calc(100vh-4rem)] shadow-2xl overflow-y-auto scrollbar-hide">
+        <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl sm:rounded-[2.5rem] p-5 sm:p-6 md:p-8 flex flex-col w-full max-w-md lg:max-w-none lg:h-[calc(100vh-4rem)] shadow-2xl overflow-y-auto scrollbar-hide">
             <div className="mb-6 sm:mb-8">
                 <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-1">Reservation</h2>
                 <p className="text-gray-500 font-bold uppercase text-[8px] sm:text-[9px] tracking-[0.2em]">Secure Checkout</p>
@@ -36,7 +36,7 @@ const ReservationPanel = ({
 
             <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8">
                 {/* Slot Info Card */}
-                <div className="bg-white/5 rounded-2xl p-4 border border-white/5 flex justify-between items-center">
+                <div className="bg-white/5 rounded-2xl p-4 sm:p-4 border border-white/5 flex justify-between items-center">
                     <div>
                         <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Zone {selectedSlot || '---'}</p>
                         <p className="text-sm font-bold text-white uppercase">{vehicleType} Slot</p>
@@ -57,7 +57,7 @@ const ReservationPanel = ({
                         value={bookingDate}
                         min={new Date().toISOString().split('T')[0]}
                         onChange={(e) => setBookingDate(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors text-sm sm:text-base"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors text-base"
                     />
                 </div>
 
@@ -68,7 +68,7 @@ const ReservationPanel = ({
                         type="time" 
                         value={startTime}
                         onChange={(e) => setStartTime(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors text-sm sm:text-base"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors text-base"
                     />
                 </div>
 
@@ -87,7 +87,7 @@ const ReservationPanel = ({
                         placeholder="e.g. ABC-1234"
                         value={vehicleNumber}
                         onChange={(e) => setVehicleNumber(e.target.value.toUpperCase())}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-2 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors placeholder:text-gray-700 uppercase text-sm sm:text-base"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 sm:py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-colors placeholder:text-gray-700 uppercase text-base"
                     />
                 </div>
 
@@ -97,12 +97,12 @@ const ReservationPanel = ({
                         <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Duration (Hours)</label>
                         <span className="text-blue-500 font-black text-sm">{duration}h</span>
                     </div>
-                    <div className="grid grid-cols-3 sm:flex gap-2">
+                    <div className="grid grid-cols-3 sm:flex gap-2.5 sm:gap-2">
                         {durations.map((h) => (
                             <button
                                 key={h}
                                 onClick={() => setDuration(h)}
-                                className={`py-2 px-2 sm:flex-1 rounded-lg text-[10px] font-black transition-all touch-manipulation ${
+                                className={`py-2.5 px-3 sm:flex-1 rounded-lg text-xs font-black transition-all touch-manipulation ${
                                     duration === h 
                                         ? 'bg-blue-600 text-white' 
                                         : 'bg-white/5 text-gray-500 hover:bg-white/10 hover:text-gray-300 active:bg-white/20'
@@ -117,45 +117,45 @@ const ReservationPanel = ({
                 {/* Payment Method */}
                 <div className="space-y-3">
                     <label className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Payment Method</label>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-3 gap-2.5 sm:gap-2">
                         <button
                             onClick={() => setPaymentMethod('cash')}
-                            className={`p-2 sm:p-3 rounded-xl border flex flex-col items-center gap-1 sm:gap-2 transition-all touch-manipulation ${
+                            className={`p-3 sm:p-3 rounded-xl border flex flex-col items-center gap-2 transition-all touch-manipulation ${
                                 paymentMethod === 'cash' 
                                     ? 'border-blue-500 bg-blue-500/10 text-blue-500' 
                                     : 'border-white/5 bg-white/5 text-gray-600 hover:border-white/10 active:bg-white/10'
                             }`}
                         >
-                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M11 17h2v-1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1h-3v-1h4V8h-2V7h-2v1h-1c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h3v1H9v2h2v1zm9-13H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V6h16v12z"/>
                             </svg>
-                            <span className="text-[8px] font-bold uppercase">Cash</span>
+                            <span className="text-[9px] sm:text-[8px] font-bold uppercase">Cash</span>
                         </button>
                         <button
                             onClick={() => setPaymentMethod('card')}
-                            className={`p-2 sm:p-3 rounded-xl border flex flex-col items-center gap-1 sm:gap-2 transition-all touch-manipulation ${
+                            className={`p-3 sm:p-3 rounded-xl border flex flex-col items-center gap-2 transition-all touch-manipulation ${
                                 paymentMethod === 'card' 
                                     ? 'border-blue-500 bg-blue-500/10 text-blue-500' 
                                     : 'border-white/5 bg-white/5 text-gray-600 hover:border-white/10 active:bg-white/10'
                             }`}
                         >
-                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
                             </svg>
-                            <span className="text-[8px] font-bold uppercase">Card</span>
+                            <span className="text-[9px] sm:text-[8px] font-bold uppercase">Card</span>
                         </button>
                         <button
                             onClick={() => setPaymentMethod('upi')}
-                            className={`p-2 sm:p-3 rounded-xl border flex flex-col items-center gap-1 sm:gap-2 transition-all touch-manipulation ${
+                            className={`p-3 sm:p-3 rounded-xl border flex flex-col items-center gap-2 transition-all touch-manipulation ${
                                 paymentMethod === 'upi' 
                                     ? 'border-blue-500 bg-blue-500/10 text-blue-500' 
                                     : 'border-white/5 bg-white/5 text-gray-600 hover:border-white/10 active:bg-white/10'
                             }`}
                         >
-                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                             </svg>
-                            <span className="text-[8px] font-bold uppercase">UPI</span>
+                            <span className="text-[9px] sm:text-[8px] font-bold uppercase">UPI</span>
                         </button>
                     </div>
                 </div>
@@ -163,7 +163,7 @@ const ReservationPanel = ({
 
             {/* Pricing and Action */}
             <div className="pt-4 sm:pt-6 border-t border-white/10 mt-auto">
-                <div className="flex justify-between items-end mb-4 sm:mb-6">
+                <div className="flex justify-between items-end mb-5 sm:mb-6">
                     <div>
                         <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Total Fee</p>
                         <p className="text-3xl sm:text-4xl font-black text-white tracking-tighter">₹{totalPrice.toFixed(2)}</p>
@@ -175,7 +175,7 @@ const ReservationPanel = ({
                     onClick={handleBooking}
                     disabled={!isFormValid || isBooking}
                     className={`
-                        w-full py-3 sm:py-4 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 transform touch-manipulation
+                        w-full py-3.5 sm:py-4 rounded-full font-black text-sm uppercase tracking-widest transition-all duration-300 transform touch-manipulation
                         ${!isFormValid || isBooking 
                             ? 'bg-white/5 text-gray-600 cursor-not-allowed' 
                             : 'bg-[#3b82f6] text-white hover:bg-blue-400 active:scale-95 active:bg-blue-600'}
@@ -384,7 +384,7 @@ const SlotSelection = () => {
                     <div className="mb-6 sm:mb-8">
                         <button
                             onClick={() => navigate(-1)}
-                            className="text-blue-500 mb-3 sm:mb-4 hover:underline text-sm sm:text-base touch-manipulation"
+                            className="text-blue-500 mb-3 sm:mb-4 hover:underline text-base touch-manipulation inline-flex items-center gap-2"
                         >
                             ← Back
                         </button>
@@ -400,7 +400,7 @@ const SlotSelection = () => {
 
                     {/* Level Sections */}
                     {levels.map((level, levelIndex) => (
-                        <div key={levelIndex} className="bg-zinc-900 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
+                        <div key={levelIndex} className="bg-zinc-900 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 mb-5 sm:mb-6">
                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3">
                                 <div className="flex items-center gap-2 sm:gap-3">
                                     <div className="w-1 h-6 sm:h-8 bg-blue-500 rounded"></div>
@@ -423,7 +423,7 @@ const SlotSelection = () => {
                             </div>
 
                             {/* Parking Grid */}
-                            <div className={`grid gap-2 sm:gap-3 md:gap-4 ${
+                            <div className={`grid gap-2.5 sm:gap-3 md:gap-4 ${
                                 vehicleType === 'car' 
                                     ? 'grid-cols-3 sm:grid-cols-4 md:grid-cols-6' 
                                     : 'grid-cols-4 sm:grid-cols-6 md:grid-cols-8'
@@ -433,13 +433,13 @@ const SlotSelection = () => {
                                         key={slot.id}
                                         onClick={() => slot.status === 'free' && setSelectedSlot(slot.id)}
                                         className={`
-                                            aspect-square rounded-xl sm:rounded-2xl p-2 sm:p-3 md:p-4 flex flex-col items-center justify-center cursor-pointer transition touch-manipulation
+                                            aspect-square rounded-xl sm:rounded-2xl p-3 sm:p-3 md:p-4 flex flex-col items-center justify-center cursor-pointer transition touch-manipulation
                                             ${selectedSlot === slot.id ? 'bg-blue-500/20 border-2 border-blue-500' : 
                                               slot.status === 'occupied' ? 'bg-zinc-800 cursor-not-allowed' : 
                                               'bg-zinc-800 hover:bg-zinc-700 active:bg-zinc-600'}
                                         `}
                                     >
-                                        <span className={`text-[10px] sm:text-xs mb-1 sm:mb-2 ${slot.status === 'occupied' ? 'text-gray-600' : 'text-gray-400'}`}>
+                                        <span className={`text-[10px] sm:text-xs mb-1 sm:mb-2 font-semibold ${slot.status === 'occupied' ? 'text-gray-600' : 'text-gray-400'}`}>
                                             {slot.id}
                                         </span>
                                         {vehicleType === 'car' ? (

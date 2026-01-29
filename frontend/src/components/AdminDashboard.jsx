@@ -131,12 +131,12 @@ const AdminDashboard = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4">
                         <div>
-                            <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight">Admin Panel</h1>
-                            <p className="text-gray-500 text-xs uppercase tracking-widest mt-1">Management Dashboard</p>
+                            <h1 className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight">Admin Panel</h1>
+                            <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-widest mt-1">Management Dashboard</p>
                         </div>
                         <button
                             onClick={handleLogout}
-                            className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-sm transition touch-manipulation"
+                            className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-xs sm:text-sm transition touch-manipulation"
                         >
                             Logout
                         </button>
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
             {/* Navigation Tabs */}
             <div className="bg-zinc-900/50 border-b border-white/10 sticky top-0 z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex gap-2 overflow-x-auto py-3">
+                    <div className="flex gap-2 overflow-x-auto py-3 scrollbar-hide">
                         {['dashboard', 'bookings', 'users', 'locations'].map((tab) => (
                             <button
                                 key={tab}
@@ -157,7 +157,7 @@ const AdminDashboard = () => {
                                     setSearchTerm('');
                                     setFilterStatus('');
                                 }}
-                                className={`px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition whitespace-nowrap touch-manipulation ${
+                                className={`px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-wider transition whitespace-nowrap touch-manipulation min-h-11 ${
                                     activeTab === tab
                                         ? 'bg-blue-600 text-white'
                                         : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700'
@@ -182,20 +182,20 @@ const AdminDashboard = () => {
                         {activeTab === 'dashboard' && stats && (
                             <div className="space-y-6">
                                 {/* Stats Grid */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                    <div className="bg-zinc-900 rounded-2xl p-6 border border-white/10">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-4">
+                                    <div className="bg-zinc-900 rounded-2xl p-5 sm:p-6 border border-white/10">
                                         <p className="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Total Bookings</p>
                                         <p className="text-3xl font-black text-blue-500">{stats.totalBookings || 0}</p>
                                     </div>
-                                    <div className="bg-zinc-900 rounded-2xl p-6 border border-white/10">
+                                    <div className="bg-zinc-900 rounded-2xl p-5 sm:p-6 border border-white/10">
                                         <p className="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Active Bookings</p>
                                         <p className="text-3xl font-black text-green-500">{stats.activeBookings || 0}</p>
                                     </div>
-                                    <div className="bg-zinc-900 rounded-2xl p-6 border border-white/10">
+                                    <div className="bg-zinc-900 rounded-2xl p-5 sm:p-6 border border-white/10">
                                         <p className="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Total Users</p>
                                         <p className="text-3xl font-black text-purple-500">{stats.totalUsers || 0}</p>
                                     </div>
-                                    <div className="bg-zinc-900 rounded-2xl p-6 border border-white/10">
+                                    <div className="bg-zinc-900 rounded-2xl p-5 sm:p-6 border border-white/10">
                                         <p className="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Total Revenue</p>
                                         <p className="text-3xl font-black text-yellow-500">₹{(stats.totalRevenue || 0).toFixed(2)}</p>
                                     </div>
@@ -258,12 +258,12 @@ const AdminDashboard = () => {
                                         placeholder="Search by vehicle number or slot..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="flex-1 bg-zinc-900 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+                                        className="flex-1 bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
                                     />
                                     <select
                                         value={filterStatus}
                                         onChange={(e) => setFilterStatus(e.target.value)}
-                                        className="bg-zinc-900 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+                                        className="bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
                                     >
                                         <option value="">All Status</option>
                                         <option value="reserved">Active</option>
@@ -350,7 +350,7 @@ const AdminDashboard = () => {
                                     placeholder="Search users by name, email, or phone..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+                                    className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
                                 />
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -161,7 +161,7 @@ const MapView = () => {
                 <div className="mb-6">
                     <button
                         onClick={() => navigate(-1)}
-                        className="text-blue-500 mb-4 hover:underline"
+                        className="text-blue-500 mb-4 hover:underline text-base touch-manipulation inline-flex items-center gap-2"
                     >
                         ← Back
                     </button>
@@ -173,16 +173,16 @@ const MapView = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                     {parkingLocations.map((location) => (
-                        <div key={location._id} className="bg-zinc-900 rounded-xl p-4 sm:p-6 hover:bg-zinc-800 transition-colors">
+                        <div key={location._id} className="bg-zinc-900 rounded-xl p-5 sm:p-6 hover:bg-zinc-800 transition-colors">
                             <h3 className="font-bold text-lg text-white mb-2">{location.name}</h3>
-                            <p className="text-sm text-gray-400 mb-3">{location.address}</p>
-                            <div className="flex justify-between items-center mb-3">
+                            <p className="text-sm text-gray-400 mb-4">{location.address}</p>
+                            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-4">
                                 <p className="text-sm text-gray-300">
-                                    Available {vehicleType} slots: {location.totalSlots?.[vehicleType] || 0}
+                                    Available {vehicleType} slots: <span className="font-bold text-white">{location.totalSlots?.[vehicleType] || 0}</span>
                                 </p>
-                                <p className="text-sm font-bold text-blue-500">
+                                <p className="text-base font-bold text-blue-500">
                                     ₹{location.pricePerHour?.[vehicleType] || 0}/hour
                                 </p>
                             </div>
@@ -190,7 +190,7 @@ const MapView = () => {
                                 onClick={() => navigate(`/slots/${location._id}`, {
                                     state: { location, vehicleType }
                                 })}
-                                className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-colors touch-manipulation"
+                                className="w-full bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-colors touch-manipulation font-semibold"
                             >
                                 View Slots
                             </button>

@@ -46,25 +46,25 @@ const SignUp = () => {
             {/* Left Half - Image */}
             <div 
                 style={{ backgroundImage: `url(${login})` }}
-                className="w-full md:w-1/2 min-h-[40vh] md:min-h-screen bg-cover bg-center relative"
+                className="w-full md:w-1/2 min-h-[50vh] md:min-h-screen bg-cover bg-center relative"
             >
                 <div className="absolute inset-0 bg-black/50" />
                 <div className="relative z-10 flex h-full items-center justify-center px-6 sm:px-12 py-8">
                     <div className="text-white text-center md:text-left">
                         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6">PARK SMART</h1>
-                        <p className="text-base sm:text-lg md:text-xl">Your hassle-free parking solution. Sign in to manage your spots.</p>
+                        <p className="text-base sm:text-lg md:text-xl max-w-md">Your hassle-free parking solution. Sign in to manage your spots.</p>
                     </div>
                 </div>
             </div>
 
             {/* Right Half - Form */}
-            <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-200 px-6 sm:px-8 md:px-12 py-8">
+            <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-200 px-6 sm:px-8 md:px-12 py-8 md:py-8">
                 <div className="w-full max-w-md">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3">WELCOME BACK</h2>
                     <p className="text-gray-400 mb-6 sm:mb-8 md:mb-12 text-sm sm:text-base">Please enter your details to sign in.</p>
 
                     <form onSubmit={handleSubmit}>
-                        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+                        {error && <p className="text-red-500 text-sm mb-4 p-3 bg-red-50 rounded">{error}</p>}
                         <div className="mb-5 sm:mb-8">
                             <label className="block text-xs font-medium text-gray-400 mb-3">UserName</label>
                             <input 
@@ -72,44 +72,44 @@ const SignUp = () => {
                                 value={formData.name}
                                 onChange={(e) => setFormData({...formData, name: e.target.value})}
                                 required
-                                className="w-full py-3 sm:py-2 border-b border-gray-300 focus:outline-none focus:border-black bg-transparent text-base"
+                                className="w-full py-3.5 sm:py-2 border-b border-gray-300 focus:outline-none focus:border-black bg-transparent text-base"
                             />
                         </div>
                     
                         <div className="mb-5 sm:mb-8">
-                            <label className="block text-xs font-medium text-gray-400 mb-2 sm:mb-3">EMAIL ADDRESS</label>
+                            <label className="block text-xs font-medium text-gray-400 mb-3">EMAIL ADDRESS</label>
                             <input 
                                 type="email"
                                 value={formData.email}
                                 onChange={(e) => setFormData({...formData, email: e.target.value})}
                                 required
-                                className="w-full py-3 sm:py-2 border-b border-gray-300 focus:outline-none focus:border-black bg-transparent text-base"
+                                className="w-full py-3.5 sm:py-2 border-b border-gray-300 focus:outline-none focus:border-black bg-transparent text-base"
                             />
                         </div>
 
                         <div className="mb-5 sm:mb-8">
-                            <label className="block text-xs font-medium text-gray-400 mb-2 sm:mb-3">PASSWORD</label>
+                            <label className="block text-xs font-medium text-gray-400 mb-3">PASSWORD</label>
                             <input 
                                 type="password"
                                 value={formData.password}
                                 onChange={(e) => setFormData({...formData, password: e.target.value})}
                                 required
-                                className="w-full py-3 sm:py-2 border-b border-gray-300 focus:outline-none focus:border-black bg-transparent text-base"
+                                className="w-full py-3.5 sm:py-2 border-b border-gray-300 focus:outline-none focus:border-black bg-transparent text-base"
                             />
                         </div>
 
                         <div className="mb-5 sm:mb-8">
-                            <label className="block text-xs font-medium text-gray-400 mb-2 sm:mb-3">PHONE NUMBER</label>
+                            <label className="block text-xs font-medium text-gray-400 mb-3">PHONE NUMBER</label>
                             <input 
                                 type="tel"
                                 value={formData.phone}
                                 onChange={(e) => setFormData({...formData, phone: e.target.value})}
                                 required
-                                className="w-full py-3 sm:py-2 border-b border-gray-300 focus:outline-none focus:border-black bg-transparent text-base"
+                                className="w-full py-3.5 sm:py-2 border-b border-gray-300 focus:outline-none focus:border-black bg-transparent text-base"
                             />
                         </div>
 
-                        <div className="flex items-center justify-between mb-10">
+                        <div className="flex items-center justify-between mb-8 md:mb-10">
                             <label className="flex items-center">
                                 <input type="checkbox" className="mr-2 w-4 h-4" />
                                 <span className="text-xs font-medium text-gray-600">REMEMBER ME</span>
@@ -119,7 +119,7 @@ const SignUp = () => {
 
                         <button 
                             type="submit"
-                            className="w-full bg-blue-600 text-white py-3 sm:py-4 font-bold text-sm hover:bg-gray-800 active:bg-gray-900 mb-6 sm:mb-8 touch-manipulation transition-colors"
+                            className="w-full bg-blue-600 text-white py-3.5 sm:py-4 font-bold text-sm hover:bg-gray-800 active:bg-gray-900 mb-6 sm:mb-8 touch-manipulation transition-colors rounded-sm"
                         >
                             SIGN UP
                         </button>

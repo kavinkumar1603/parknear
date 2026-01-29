@@ -14,3 +14,35 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* Mobile-only optimizations - Desktop unaffected */
+@media (max-width: 768px) {
+  /* Improve touch targets on mobile */
+  button, a, input, select {
+    min-height: 44px;
+  }
+  
+  /* Better mobile spacing */
+  .mobile-px {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Prevent zoom on input focus for iOS */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Optimize image rendering on mobile */
+  img {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  /* Better mobile text readability */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}
