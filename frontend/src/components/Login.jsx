@@ -1,5 +1,5 @@
 import login from '../assets/login.jpg'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation, Navigate } from 'react-router-dom'
 import { useState } from 'react'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
@@ -7,10 +7,20 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000
 const Login = () => {
 
     const navigate = useNavigate();
+    const location = useLocation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [showRoleChoice, setShowRoleChoice] = useState(false);
+
+    // Get the page user was trying to access
+    const from = location.state?.from || '/parking-selection';
+
+    // If already logged in, redirect to parking selection
+    const token = localStorage.getItem('token');
+    if (token && !showRoleChoice) {
+        return <Navigate to="/parking-selection" replace />;
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,7 +40,8 @@ const Login = () => {
                     setShowRoleChoice(true);
                     setError('');
                 } else {
-                    navigate('/parking-selection');
+                    // Redirect to the page they were trying to access
+                    navigate(from, { replace: true });
                 }
             } else {
                 setError(data.message);
@@ -42,9 +53,10 @@ const Login = () => {
 
     const handleRoleSelect = (role) => {
         if (role === 'admin') {
-            navigate('/admin');
+            navigate('/admin', { replace: true });
         } else {
-            navigate('/parking-selection');
+            // Redirect to the page they were trying to access
+            navigate(from, { replace: true });
         }
     }
 

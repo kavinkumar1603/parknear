@@ -1,5 +1,5 @@
 import login from '../assets/login.jpg'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { useState } from 'react'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
@@ -15,6 +15,12 @@ const SignUp = () => {
     });
     const [error, setError] = useState('');
 
+    // If already logged in, redirect to parking selection
+    const token = localStorage.getItem('token');
+    if (token) {
+        return <Navigate to="/parking-selection" replace />;
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -27,7 +33,7 @@ const SignUp = () => {
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
-                navigate('/parking-selection');
+                navigate('/parking-selection', { replace: true });
             } else {
                 setError(data.message);
             }
@@ -48,7 +54,7 @@ const SignUp = () => {
                 style={{ backgroundImage: `url(${login})` }}
                 className="w-full md:w-1/2 min-h-[50vh] md:min-h-screen bg-cover bg-center relative"
             >
-                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-black/70" />
                 <div className="relative z-10 flex h-full items-center justify-center px-6 sm:px-12 py-8">
                     <div className="text-white text-center md:text-left">
                         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6">PARK SMART</h1>

@@ -7,9 +7,11 @@ import ParkingSelection from './components/ParkingSelection'
 import CarBooking from './components/CarBooking'
 import BikeBooking from './components/BikeBooking'
 import MapView from './components/MapView'
+import MapParkingView from './components/MapParkingView'
 import SlotSelection from './components/SlotSelection'
 import AdminDashboard from './components/AdminDashboard'
 import BookingTicket from './components/BookingTicket'
+import ProtectedRoute from './components/ProtectedRoute'
 
 
 function App() {
@@ -19,16 +21,23 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<SignUp/>} />
-          <Route path="/parking-selection" element={<ParkingSelection/>} />
-          <Route path="/map/:vehicleType" element={<MapView />} />
-          <Route path="/slots/:locationId" element={<SlotSelection />} />
-          <Route path="/car-booking" element={<CarBooking/>} />
-          <Route path="/bike-booking" element={<BikeBooking/>} />
-          <Route path="/admin" element={<AdminDashboard/>} />
-          <Route path="/bookingticket" element={<BookingTicket/>} />
+          
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/parking-selection" element={<ParkingSelection/>} />
+            <Route path="/map-parking/:vehicleType" element={<MapParkingView />} />
+            <Route path="/map/:vehicleType" element={<MapView />} />
+            <Route path="/slots/:locationId" element={<SlotSelection />} />
+            <Route path="/car-booking" element={<CarBooking/>} />
+            <Route path="/bike-booking" element={<BikeBooking/>} />
+            <Route path="/admin" element={<AdminDashboard/>} />
+            <Route path="/bookingticket" element={<BookingTicket/>} />
+          </Route>
+          
           <Route path="*" element={<h1 className='text-center mt-20 text-3xl'>404 Not Found</h1>} />
         </Routes>
       </div>

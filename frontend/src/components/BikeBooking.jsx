@@ -114,12 +114,12 @@ const BikeBooking = () => {
             {/* Left Side - Parking Slots - Scrollable */}
             <div className="flex-1 overflow-y-auto scrollbar-hide">
                 <div className="p-4 sm:p-6 md:p-8">
-                <div className="mb-6 sm:mb-8">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
-                        AVAILABLE <span className="text-blue-500">BIKE</span> SLOTS
-                    </h1>
-                    <p className="text-gray-500 text-xs sm:text-sm">Real-time occupancy status for Level 1 - 3</p>
-                </div>
+                    <div className="mb-6 sm:mb-8">
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
+                            AVAILABLE <span className="text-blue-500">BIKE</span> SLOTS
+                        </h1>
+                        <p className="text-gray-500 text-xs sm:text-sm">Real-time occupancy status for Level 1 - 3</p>
+                    </div>
 
                 {/* Levels Section */}
                 <div className="space-y-4 sm:space-y-6">
@@ -170,6 +170,7 @@ const BikeBooking = () => {
                             </div>
                         </div>
                     ))}
+                </div>
                 </div>
             </div>
 
@@ -340,7 +341,7 @@ const BikeBooking = () => {
                 </div>
             </div>
         </div>
-    </div>
-)}
+    )
+}
 
 export default BikeBooking
