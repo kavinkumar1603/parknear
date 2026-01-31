@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import BookingTicket from './BookingTicket'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 const CarBooking = () => {
@@ -10,6 +11,8 @@ const CarBooking = () => {
     const [bookingDate, setBookingDate] = useState(new Date().toISOString().split('T')[0])
     const [startTime, setStartTime] = useState('09:00')
     const [occupiedSlots, setOccupiedSlots] = useState([])
+    const [showTicket, setShowTicket] = useState(false)
+    const [ticketData, setTicketData] = useState(null)
 
     // Fetch occupied slots from database
     useEffect(() => {
@@ -62,7 +65,41 @@ const CarBooking = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                alert(`Reservation confirmed! Total: ${data.price} for ${data.details}`);
+                // Get user info from localStorage
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                // Prepare ticket data
+                const ticket = {
+                    bookingId: data.booking._id,
+                    locationName: 'City Parking Hub',
+                    locationAddress: 'Main Street, Downtown',
+                    parkingSlot: selectedSlot,
+                    vehicleNumber: plateNumber,
+                    vehicleType: 'CAR',
+                    dateLabel: new Date(bookingDate).toLocaleDateString('en-US', { 
+                        weekday: 'short', 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric' 
+                    }),
+                    durationHours: duration,
+                    startTimeLabel: startTime,
+                    endTimeLabel: calculateEndTime(),
+                    price: data.booking.price,
+                    userName: user.name || 'Guest User',
+                    userEmail: user.email || '',
+                    createdAtLabel: new Date().toLocaleString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })
+                };
+                
+                setTicketData(ticket);
+                setShowTicket(true);
+                
                 // Refresh occupied slots
                 const slotsResponse = await fetch(`${API_BASE_URL}/api/bookings/available?vehicleType=car`);
                 const slotsData = await slotsResponse.json();
@@ -364,6 +401,14 @@ const CarBooking = () => {
                     </div>
                 </div>
             </div>
+            
+            {/* Booking Ticket Modal */}
+            {showTicket && ticketData && (
+                <BookingTicket 
+                    ticketData={ticketData} 
+                    onClose={() => setShowTicket(false)} 
+                />
+            )}
         </div>
 )}
     

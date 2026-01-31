@@ -86,12 +86,6 @@ const MapParkingView = () => {
         }
     }, [selectedLocation, vehicleType, navigate]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        navigate('/login');
-    };
-
     return (
         <div className="relative h-screen">
             {/* Back Button */}
@@ -100,14 +94,6 @@ const MapParkingView = () => {
                 className="absolute top-4 left-4 z-10 bg-white text-black px-4 py-2 rounded-lg shadow-lg hover:bg-gray-100 transition-colors font-semibold"
             >
                 ← Back
-            </button>
-
-            {/* Logout Button */}
-            <button
-                onClick={handleLogout}
-                className="absolute top-4 left-32 z-10 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-red-700 transition-colors font-semibold"
-            >
-                Logout
             </button>
 
             {/* Vehicle Type Badge */}

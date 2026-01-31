@@ -11,22 +11,8 @@ const ParkingSelection = () => {
         navigate('/map-parking/bike');
     }
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        navigate('/login');
-    }
-
     return (
         <div className="min-h-screen bg-black flex items-center justify-center px-4 sm:px-6 md:px-8 py-8 relative">
-            {/* Logout Button */}
-            <button
-                onClick={handleLogout}
-                className="absolute top-4 right-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
-            >
-                Logout
-            </button>
-
             <div className="max-w-5xl w-full text-center">
                 {/* Heading */}
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-1 sm:mb-2 leading-tight">
