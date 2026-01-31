@@ -71,7 +71,7 @@ const Login = () => {
                 style={{ backgroundImage: `url(${login})` }}
                 className="w-full md:w-1/2 min-h-[50vh] md:min-h-screen bg-cover bg-center relative"
             >
-                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-black/70" />
                 <div className="relative z-10 flex h-full items-center justify-center px-6 sm:px-12 py-8">
                     <div className="text-white text-center md:text-left">
                         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6">PARK SMART</h1>

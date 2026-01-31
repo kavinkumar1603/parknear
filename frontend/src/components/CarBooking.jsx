@@ -215,7 +215,7 @@ const CarBooking = () => {
                             </div>
                             <div className="text-right">
                                 <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Level</p>
-                                <p className="text-sm font-bold text-blue-500">01</p>
+                                <p className="text-sm font-bold text-blue-500">{selectedSlot ? selectedSlot.charAt(1) : '--'}</p>
                             </div>
                         </div>
 
