@@ -174,9 +174,9 @@ const CarBooking = () => {
     const durations = [1, 2, 4, 8, 12, 24]
 
     return (
-        <div className="h-screen bg-black text-white flex flex-col lg:flex-row">
+        <div className="min-h-screen lg:h-screen bg-black text-white flex flex-col lg:flex-row">
             {/* Left Side - Parking Slots - Scrollable */}
-            <div className="flex-1 overflow-y-auto scrollbar-hide">
+            <div className="flex-1 overflow-y-auto scrollbar-hide min-h-[60vh] lg:min-h-0">
                 <div className="p-4 sm:p-6 md:p-8">
                 <div className="mb-6 sm:mb-8">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
