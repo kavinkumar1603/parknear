@@ -16,7 +16,7 @@ const ParkingSelection = () => {
             <div className="max-w-5xl w-full text-center">
                 {/* Heading */}
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-1 sm:mb-2 leading-tight">
-                    SMART PARKING
+                    QUICK PARK
                 </h1>
                 <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-blue-500 mb-4 sm:mb-6 leading-tight">
                     MADE SIMPLE

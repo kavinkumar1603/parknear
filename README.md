@@ -1,6 +1,6 @@
-# ParkNear — Smart Parking (MERN)
+# ParkNear — Quick Park (MERN)
 
-ParkNear is a smart parking application that helps users find nearby parking locations, view real-time slot availability by level, and book slots for cars or bikes. The frontend is built with React + Vite and Tailwind CSS. It consumes a REST backend API and supports Google Maps for a richer location experience.
+ParkNear is a quick parking application that helps users find nearby parking locations, view real-time slot availability by level, and book slots for cars or bikes. The frontend is built with React + Vite and Tailwind CSS. It consumes a REST backend API and supports Google Maps for a richer location experience.
 
 ## Demo Flow
 

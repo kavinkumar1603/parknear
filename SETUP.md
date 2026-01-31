@@ -137,4 +137,4 @@ All locations are around **Coimbatore** area.
 
 ---
 
-Enjoy your Smart Parking System! 🚗🏍️
+Enjoy your Quick Park System! 🚗🏍️

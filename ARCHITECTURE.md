@@ -1,4 +1,4 @@
-# Smart Parking System - Architecture & Setup
+# Quick Park System - Architecture & Setup
 
 ## System Architecture
 
