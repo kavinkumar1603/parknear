@@ -118,7 +118,7 @@ const MapParkingView = () => {
                     <Marker
                         position={defaultCenter}
                         icon={{
-                            url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                            url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
                             scaledSize: { width: 40, height: 40 }
                         }}
                         title="Your Location"
@@ -132,8 +132,8 @@ const MapParkingView = () => {
                             onClick={() => handleMarkerClick(location)}
                             icon={{
                                 url: vehicleType === 'car' 
-                                    ? 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                                    : 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                                    ? 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                                    : 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
                                 scaledSize: { width: 40, height: 40 }
                             }}
                             title={location.name}
